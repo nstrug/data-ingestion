@@ -364,9 +364,9 @@ def ingest_documents(input_artifact: Input[Artifact]):
 def ingestion_pipeline():
     load_docs_task = load_documents()
     format_docs_task = format_documents(documents=load_docs_task.output)
-    format_docs_task.set_accelerator_type("nvidia.com/gpu").set_accelerator_limit("1")
+    format_docs_task.add_accelerator_type("nvidia.com/gpu").set_accelerator_limit("1")
     ingest_docs_task = ingest_documents(input_artifact=format_docs_task.outputs['splits_artifact'])
-    ingest_docs_task.set_accelerator_type("nvidia.com/gpu").set_accelerator_limit("1")
+    ingest_docs_task.add_accelerator_type("nvidia.com/gpu").set_accelerator_limit("1")
 
     kubernetes.use_secret_as_env(
         ingest_docs_task,
